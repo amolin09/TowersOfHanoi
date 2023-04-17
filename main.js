@@ -22,6 +22,7 @@ let stacks = {
   c: []
 };
 
+let moves = 0
 let start = ""
 let end = ""
 
@@ -35,6 +36,7 @@ const printStacks = () => {
   console.log("a: " + stacks.a);
   console.log("b: " + stacks.b);
   console.log("c: " + stacks.c);
+  console.log("Moves: " + moves)
 }
 
 // Next, what do you think this function should do?
@@ -68,84 +70,129 @@ const movePiece = () => {
   else{
     console.log("That is not a legal move")
   }
-
+  moves++
 }
 
 // Before you move, should you check if the move it actually allowed? Should 3 be able to be stacked on 2
-const isLegal = () => {
+const isLegal = (check1, check2) => {
   // Your code here
   //check if new stack has something already
   //if last index of new stack is smaller than moving piece, print illegal
+  start = check1
+  end = check2
 
-  if(start == "a" && end == "b"){
-    
-    if((stackA[stackA.length-1])>(stackB[stackB.length-1])){
-      
+  if(start == 'a'){
+
+    if(stackA.length == 0){
+      console.log("That is not a legal move")
       return false
     }
-    else{
-      return true
-    }
-  }
-
-  else if(start == "a" && end == "c"){
     
-    if((stackA[stackA.length-1])>(stackC[stackC.length-1])){
-      
-      return false
-    }
-    else{
-      return true
-    }
-  }
-
-  else if(start == "b" && end == "a"){
+    else if(end == "b"){
     
-    if((stackB[stackB.length-1])>(stackA[stackA.length-1])){
-      
-      return false
-    }
-    else{
-      return true
-    }
-  }
+      if((stackA[stackA.length-1])>(stackB[stackB.length-1])){
+        console.log("That is not a legal move")
+        return false
+      }
 
-  else if(start == "b" && end == "c"){
-    
-    if((stackB[stackB.length-1])>(stackC[stackC.length-1])){
-      
-      return false
+      else{
+        movePiece()
+        return true
+      }
     }
-    else{
-      return true
-    }
-  }
 
-  else if(start == "c" && end == "b"){
+    else if(end == "c"){
     
-    if((stackC[stackC.length-1])>(stackB[stackB.length-1])){
-      
-      return false
+      if((stackA[stackA.length-1])>(stackC[stackC.length-1])){
+        console.log("That is not a legal move")
+        return false
+      }
+     else{
+      movePiece()
+        return true
+      }
     }
     else{
-      return true
-    }
-  }
-
-  else if(start == "c" && end == "a"){
-    
-    if((stackC[stackC.length-1])>(stackA[stackA.length-1])){
-      
-      return false
-    }
-    else{
-      return true
+      console.log("That is not a legal move")
+        return false
     }
   }
   
-  else{
-    return false
+  if(start == 'b'){
+
+    if(stackB.length == 0){
+      console.log("That is not a legal move")
+      return false
+    }
+    
+    else if(end == "a"){
+    
+      if((stackB[stackB.length-1])>(stackA[stackA.length-1])){
+        console.log("That is not a legal move")
+        return false
+      }
+
+      else{
+        movePiece()
+        return true
+      }
+    }
+
+    else if(end == "c"){
+    
+      if((stackB[stackB.length-1])>(stackC[stackC.length-1])){
+        console.log("That is not a legal move")
+        return false
+      }
+     else{
+      movePiece()
+        return true
+      }
+    }
+    else{
+      console.log("That is not a legal move")
+        return false
+    }
   }
+
+  if(start == 'c'){
+
+    if(stackC.length == 0){
+      console.log("That is not a legal move")
+      return false
+    }
+    
+    else if(end == "a"){
+    
+      if((stackC[stackC.length-1])>(stackA[stackA.length-1])){
+        console.log("That is not a legal move")
+        return false
+      }
+
+      else{
+        movePiece()
+        return true
+      }
+    }
+
+    else if(end == "b"){
+    
+      if((stackC[stackC.length-1])>(stackB[stackB.length-1])){
+        console.log("That is not a legal move")
+        return false
+      }
+     else{
+      movePiece()
+        return true
+      }
+    }
+    else{
+      console.log("That is not a legal move")
+        return false
+    }
+  }
+
+ 
   
   //if not, movePiece
 
@@ -153,8 +200,7 @@ const isLegal = () => {
 
 // What is a win in Towers of Hanoi? When should this function run?
 const checkForWin = () => {
-  console.log(stacks.c.length)
-  if((stacks.c.length == 4)){
+  if((stacks.b.length == 4)){
     winner = true
     return true
   }
@@ -180,20 +226,13 @@ const towersOfHanoi = (startStack, endStack) => {
   stackA = stacks.a
   stackB = stacks.b
   stackC = stacks.c
-  isLegal()
-  if(isLegal){
-    movePiece()
-    checkForWin()
+  isLegal(start, end)
+  checkForWin()
     if(winner){
       console.log("You win!")
     }
   }
-  else{
-    console.log("This is not a legal move")
-  }
-
-
-}
+  
 
 const getPrompt = () => {
   printStacks();
